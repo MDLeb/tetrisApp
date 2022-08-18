@@ -18,6 +18,7 @@ function Control({score, lines, level, onPause, onStart, onContinue}) {
             <div className='control_UI'>
                 <button className='control_UI__start enabled' onClick={() => {
                         onStart(isStarted);
+                        setIsPaused(false);
                         setIsStarted(true);
                     }}>{
                         isStarted ? 'restart' : 'start'

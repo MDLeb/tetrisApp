@@ -56,7 +56,13 @@ class Board {
   
     play(restart = false){
         if(restart) {
-           this.clearBoard();
+            this.score = 0;
+            this.setScore(this.score);
+            this.level = 0;
+            this.setLevel(this.level);
+            this.lines = 0;
+            this.setLines(this.lines);
+            this.clearBoard(this.score);
             this.isFigureMoving = false;
             clearInterval(this.interval);
             this.currentFig = null;

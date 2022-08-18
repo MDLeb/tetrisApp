@@ -11,9 +11,8 @@ function Main() {
     const [score, setScore] = useState(0);
     const [lines, setLines] = useState(0);
     const [level, setLevel] = useState(0);
+    const [board, setBoard] = useState(0);
 
-
-    let board = null;
     useEffect(() => {
         const ctx = ref.current.getContext('2d')
         ctx.canvas.width = sizes.COLS * sizes.BLOCK_SIZE;
@@ -22,7 +21,7 @@ function Main() {
         ctx.canvas.style.borderColor = 'yellowgreen';
         ctx.canvas.style.backgroundColor='rgba(29, 255, 53, 0.3)';
         ctx.scale(sizes.BLOCK_SIZE, sizes.BLOCK_SIZE);
-        board = new Board(ctx, score, setScore, lines, setLines, level, setLevel);
+        setBoard(new Board(ctx, score, setScore, lines, setLines, level, setLevel));
     }, [])
 
     const onStart = (isStarted) => {

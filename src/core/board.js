@@ -6,10 +6,10 @@ class Board {
    constructor(ctx, score, setScore, lines, setLines, level, setLevel) {
         this.boardMatrix = [...initBoard];
         this.ctx = ctx;
-        this.flag = true;//game over if flag == false
         this.currentFig = null;
         this.isFigureMoving = false;
         this.isKeyDownPressed = false;
+        this.isGameOver = false;
         this.timer = 500;
         this.speed = 0;
 
@@ -55,6 +55,7 @@ class Board {
     }
   
     play(restart = false){
+        this.isGameOver = false;
         if(restart) {
             this.score = 0;
             this.setScore(this.score);
@@ -68,8 +69,9 @@ class Board {
             this.currentFig = null;
         }
         this.addFigure();
-        this.interval = setInterval(() => this.game(), this.timer - this.speed);
         this.drawBlocks();
+        this.interval = setInterval(() => this.game(), this.timer - this.speed);
+        
     }
 
     pause(){
@@ -80,9 +82,11 @@ class Board {
         this.interval = setInterval(() => this.game(), this.timer - this.speed);
     }
 
-    game(){
+    async game(){
+        if(this.isGameOver) return;
         if(this.isFigureMoving && this.currentFig.checkState(this.boardMatrix)){
-            this.currentFig.fall(this.boardMatrix);
+            this.currentFig.addMatrix(this.boardMatrix);
+            await setTimeout(() => this.currentFig.fall(this.boardMatrix), this.timer - this.speed);
             this.isFigureMoving = this.currentFig.checkState(this.boardMatrix);
         } else {
             clearInterval(this.interval);
@@ -93,14 +97,18 @@ class Board {
     }
 
     gameOver(){
-        document.getElementsByClassName('game-over')[0].classList.toggle('active');
-        document.getElementsByClassName('play-button')[0].removeAttribute('disabled');
+        this.isGameOver = true;
+        
     }
    
     checkBoardState(){ 
-        this.boardMatrix[0].forEach((val) => { // проверяем самый верхний ряд доски, есть ли в нем не нулевые элементы
+        this.boardMatrix[2].forEach((val) => { // проверяем самый верхний ряд доски, есть ли в нем не нулевые элементы
             //какая-то кривая проверка
-            if(val) this.flag = false;
+            if(val) {
+                this.pause();
+                this.gameOver()
+            }
+            
         });
         //1 линия — 100 очков, 
         //2 линии — 300 очков, 
@@ -137,8 +145,6 @@ class Board {
             default: this.speed = 0;
         }
 
-
-
         this.boardMatrix.forEach((row, index) => { //если появляется ряд, в котором нет нулевыъ ячеек - убираем его
             if(!row.includes(0)) {
                 this.boardMatrix.splice(index, 1);
@@ -174,7 +180,7 @@ class Board {
         } 
         requestAnimationFrame(this.drawBlocks)  
     }
-    clearBoard= () => {
+    clearBoard = () => {
         for(let i = 0; i < sizes.COLS; i++) {
             for (let j = 0; j < sizes.ROWS; j++){
                 this.boardMatrix[j][i] = 0;

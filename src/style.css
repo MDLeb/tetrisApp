@@ -18,6 +18,7 @@ body {
     margin: 30px auto;
     color: white;
     font-family: 'Press Start 2P';
+    position: relative;
 }
 .control {
     flex: 1;
@@ -51,4 +52,15 @@ body {
 .control_UI button:hover {
     box-shadow: 0 0px 10px 2px rgb(29, 255, 78);
     transition: all 0.2s;
+}
+.control_message__gameover {
+    text-transform: uppercase;
+    display: block;
+    width: 52%;
+    color: red;
+    font-size: 30px;
+    position: absolute;
+    text-align: center;
+    top: 270px;
+    left: 0px;
 }

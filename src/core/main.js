@@ -12,6 +12,8 @@ function Main() {
     const [lines, setLines] = useState(0);
     const [level, setLevel] = useState(0);
     const [board, setBoard] = useState(0);
+    const [isGameOver, setIsGameOver] = useState(false);
+
 
     useEffect(() => {
         const ctx = ref.current.getContext('2d')
@@ -21,7 +23,7 @@ function Main() {
         ctx.canvas.style.borderColor = 'yellowgreen';
         ctx.canvas.style.backgroundColor='rgba(29, 255, 53, 0.3)';
         ctx.scale(sizes.BLOCK_SIZE, sizes.BLOCK_SIZE);
-        setBoard(new Board(ctx, score, setScore, lines, setLines, level, setLevel));
+        setBoard(new Board(ctx, score, setScore, lines, setLines, level, setLevel, setIsGameOver));
     }, [])
 
     const onStart = (isStarted) => {
@@ -40,7 +42,7 @@ function Main() {
     return (
         <div className='main'>
             <canvas ref={ref} />
-            <Control score={score} lines={lines} level={level} onPause={onPause} onStart={onStart} onContinue={onContinue}></Control>
+            <Control score={score} lines={lines} level={level} onPause={onPause} onStart={onStart} onContinue={onContinue} isGameOver={isGameOver}></Control>
         </div>
     );
   }

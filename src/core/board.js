@@ -3,7 +3,7 @@ import Figure from './figure';
 
 
 class Board { 
-   constructor(ctx, score, setScore, lines, setLines, level, setLevel) {
+   constructor(ctx, score, setScore, lines, setLines, level, setLevel, setIsGameOver) {
         this.boardMatrix = [...initBoard];
         this.ctx = ctx;
         this.currentFig = null;
@@ -12,6 +12,7 @@ class Board {
         this.isGameOver = false;
         this.timer = 500;
         this.speed = 0;
+        this.setIsGameOver = setIsGameOver;
 
         this.score = score;
         this.setScore = setScore;
@@ -21,42 +22,44 @@ class Board {
 
         this.level = level;
         this.setLevel = setLevel;
+    }
 
-        window.addEventListener('keydown', (event) => {
+    keyBoardControl = (event) => {
+        if(event.type === "keydown") {
             switch(event.code) {
-                case 'ArrowRight': 
-                    this.currentFig.move('right', this.boardMatrix);
-                    break;
-                case 'ArrowLeft': 
-                    this.currentFig.move('left', this.boardMatrix);
-                    break;
-                case 'ArrowDown': 
-                    if(!this.isKeyDownPressed) {
-                        this.timer = 100;
-                        clearInterval(this.interval);
-                        this.interval = setInterval(() => this.game(), this.timer);
-                        this.isKeyDownPressed = true;
-                    }
-                    
-                    break;
-                case 'ArrowUp':
-                    this.currentFig.rotate(this.boardMatrix);
-                    break;
-                };
-        });
-        window.addEventListener('keyup', (event) => {
+            case 'ArrowRight': 
+                this.currentFig.move('right', this.boardMatrix);
+                break;
+            case 'ArrowLeft': 
+                this.currentFig.move('left', this.boardMatrix);
+                break;
+            case 'ArrowDown': 
+                if(!this.isKeyDownPressed) {
+                    this.timer = 100;
+                    clearInterval(this.interval);
+                    this.interval = setInterval(() => this.game(), this.timer);
+                    this.isKeyDownPressed = true;
+                }
+                break;
+            case 'ArrowUp':
+                this.currentFig.rotate(this.boardMatrix);
+                break;
+            };
+        } else if(event.type === "keyup") {
             if(event.code === 'ArrowDown'){
                 this.timer = 500;
                 clearInterval(this.interval);
                 this.interval = setInterval(() => this.game(), this.timer - this.speed);
                 this.isKeyDownPressed = false;
             }
-        });
+        }
     }
-  
     play(restart = false){
+        window.addEventListener('keydown', this.keyBoardControl);
+        window.addEventListener('keyup', this.keyBoardControl);
         this.isGameOver = false;
         if(restart) {
+            this.setIsGameOver(false);
             this.score = 0;
             this.setScore(this.score);
             this.level = 0;
@@ -76,9 +79,13 @@ class Board {
 
     pause(){
         clearInterval(this.interval);
+        window.removeEventListener('keydown', this.keyBoardControl);
+        window.removeEventListener('keyup', this.keyBoardControl);
     }
 
     continue() {
+        window.addEventListener('keydown', this.keyBoardControl);
+        window.addEventListener('keyup', this.keyBoardControl);
         this.interval = setInterval(() => this.game(), this.timer - this.speed);
     }
 
@@ -98,6 +105,13 @@ class Board {
 
     gameOver(){
         this.isGameOver = true;
+        this.setIsGameOver(this.isGameOver);
+        window.removeEventListener('keydown', (event) => {
+            this.keyBoardControl(event, 'keydown')
+        });
+        window.removeEventListener('keyup', (event) => {
+            this.keyBoardControl(event, 'keyup')
+        });
         
     }
    

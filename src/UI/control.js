@@ -2,7 +2,7 @@ import React from 'react';
 import { useRef, useEffect, useState} from 'react'
 
 
-function Control({score, lines, level, onPause, onStart, onContinue}) {
+function Control({score, lines, level, onPause, onStart, onContinue, isGameOver}) {
 
     const [isPaused, setIsPaused] = useState(false);
     const [isStarted, setIsStarted] = useState(false);
@@ -25,14 +25,19 @@ function Control({score, lines, level, onPause, onStart, onContinue}) {
                     }</button>
                 {!isPaused ? 
                     <button className='control_UI__pause' onClick={() => {
+                        if(!isStarted) return;
                         onPause();
                         setIsPaused(true);
                     }}>pause</button> :
                     <button className='control_UI__pause' onClick={() => {
+                        if(!isStarted) return;
                         onContinue();
                         setIsPaused(false);
                     }}>continue</button>
                 }
+            </div>
+            <div className='control_message'>
+                {isGameOver ? <p className='control_message__gameover'>game over</p> : ''}
             </div>
         </div>
     );

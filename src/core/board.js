@@ -174,7 +174,7 @@ class Board {
     }
 
     addFigure = () => {
-        let figType = Math.floor(Math.random() * 6);
+        let figType = Math.floor(Math.random() * 7);
         let figure = new Figure(figures[figureTypes[figType]]);
         this.currentFig = figure;
         this.isFigureMoving = true;

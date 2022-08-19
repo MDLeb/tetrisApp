@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/tetrisApp/static/css/main.945facb4.css",
-    "main.js": "/tetrisApp/static/js/main.dac25ce4.js",
+    "main.css": "/tetrisApp/static/css/main.dc3ce794.css",
+    "main.js": "/tetrisApp/static/js/main.9e25cb2d.js",
     "index.html": "/tetrisApp/index.html",
-    "main.945facb4.css.map": "/tetrisApp/static/css/main.945facb4.css.map",
-    "main.dac25ce4.js.map": "/tetrisApp/static/js/main.dac25ce4.js.map"
+    "main.dc3ce794.css.map": "/tetrisApp/static/css/main.dc3ce794.css.map",
+    "main.9e25cb2d.js.map": "/tetrisApp/static/js/main.9e25cb2d.js.map"
   },
   "entrypoints": [
-    "static/css/main.945facb4.css",
-    "static/js/main.dac25ce4.js"
+    "static/css/main.dc3ce794.css",
+    "static/js/main.9e25cb2d.js"
   ]
 }
